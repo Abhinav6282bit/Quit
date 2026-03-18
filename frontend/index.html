@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quit It | Official Final Version</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div id="auth-container" class="auth-box">
+        <h2 id="auth-title">Welcome to Quit It</h2>
+        
+        <div id="login-form">
+            <input type="email" id="login-email" placeholder="Email">
+            <input type="password" id="login-password" placeholder="Password">
+            <button onclick="handleLogin()">Login</button>
+            <p>New here? <span style="color:var(--primary); cursor:pointer" onclick="toggleAuth()">Register Now</span></p>
+        </div>
+
+        <div id="signup-form" class="hidden">
+            <input type="text" id="signup-name" placeholder="Full Name">
+            <input type="email" id="signup-email" placeholder="Email">
+            <input type="password" id="signup-password" placeholder="Password">
+            <div class="row">
+                <select id="signup-sex">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Others">Others</option>
+                </select>
+                <input type="number" id="signup-age" placeholder="Age">
+            </div>
+            <div class="row">
+                <input type="number" id="signup-height" placeholder="Height (cm)">
+                <input type="number" id="signup-weight" placeholder="Weight (kg)">
+            </div>
+            <input type="text" id="signup-disease" placeholder="Medical Conditions">
+            <button onclick="handleSignup()">Create Account</button>
+            <p>Have an account? <span style="color:var(--primary); cursor:pointer" onclick="toggleAuth()">Login</span></p>
+        </div>
+    </div>
+
+    <div id="main-app" class="hidden">
+        <nav class="navbar">
+            <div class="logo">QUIT IT</div>
+            <ul class="nav-links">
+                <li onclick="showSection('dashboard')">Home</li>
+                <li onclick="showSection('diet')">Diet</li>
+                <li onclick="showSection('finance')">Finance</li>
+                <li onclick="showSection('community')">Community</li>
+                <li onclick="showSection('ai-bot')">AI Coach</li>
+                <li onclick="showSection('profile')">Profile</li>
+                <li onclick="handleLogout()" style="color:var(--danger)">Logout</li>
+            </ul>
+        </nav>
+
+        <div class="container">
+            <section id="dashboard" class="page">
+                <div class="grid">
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3>🫁 Lung Recovery</h3>
+                            <span id="health-pct" style="font-weight: 800; color: var(--success); font-size: 1.1rem;">0%</span>
+                        </div>
+                        <div class="progress-container">
+                            <div id="health-bar" class="progress-bar" style="background:var(--success)"></div>
+                        </div>
+                        <p id="health-desc" style="font-size: 0.85rem; color: var(--text-muted); min-height: 1.2rem;"></p>
+                    </div>
+
+                    <div class="card">
+                        <h3>🏆 Achievements</h3>
+                        <div id="badge-container">
+                            <div class="badge-item" id="badge-1">
+                                <span class="badge-icon">🌱</span>
+                                <span class="badge-label">Novice</span>
+                                <span class="badge-status" id="status-1">Locked</span>
+                            </div>
+                            <div class="badge-item" id="badge-2">
+                                <span class="badge-icon">💰</span>
+                                <span class="badge-label">Saver</span>
+                                <span class="badge-status" id="status-2">Locked</span>
+                            </div>
+                            <div class="badge-item" id="badge-3">
+                                <span class="badge-icon">🔥</span>
+                                <span class="badge-label">Elite</span>
+                                <span class="badge-status" id="status-3">Locked</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>✅ Daily Tasks</h3>
+                        <div class="task-list">
+                            <div class="task-item">
+                                <label><input type="checkbox"> Morning Breathing</label>
+                            </div>
+                            <div class="task-item">
+                                <label><input type="checkbox"> No Smoking with Coffee</label>
+                            </div>
+                            <div class="task-item">
+                                <label><input type="checkbox"> Evening Walk</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid" style="margin-top:20px;">
+                    <div class="card"><h3>⏳ Life Regained</h3><p id="lifeGained" class="stat">0 min</p></div>
+                    <div class="card">
+                        <h3>🚬 Log Usage</h3>
+                        <div class="row log-row">
+                            <input type="number" id="smokeInput" placeholder="Cigs today...">
+                            <button onclick="logHabit()">Log Now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="height:300px;"><canvas id="progressChart"></canvas></div>
+            </section>
+
+            <section id="finance" class="page hidden">
+                <div class="grid">
+                    <div class="card highlight-card">
+                        <h3>💰 Total Savings</h3>
+                        <p id="savings" class="stat" style="font-size: 2.5rem; color: var(--success);">$0.00</p>
+                    </div>
+                    <div class="card">
+                        <h3>💸 Financial Analysis</h3>
+                        <p>Daily Spend: <span id="daily-spend" style="color:var(--danger)">$0.00</span></p>
+                        <p>Monthly Projection: <span id="monthly-loss" style="color:var(--success)">$0.00</span></p>
+                        <hr style="margin: 15px 0; border: 0.5px solid var(--border);">
+                        <label style="font-size: 0.8rem; color: var(--text-muted);">Price per Cigarette ($):</label>
+                        <input type="number" id="cig-price" value="0.75" onchange="updateFinance()" style="margin-top: 5px;">
+                    </div>
+                </div>
+            </section>
+
+            <section id="ai-bot" class="page hidden">
+                <div class="chat-wrapper">
+                    <div class="chat-header-main">
+                        <div>
+                            <h2 style="margin:0; font-size:1.4rem;">🤖 AI Recovery Coach</h2>
+                            <p style="margin:0; font-size:0.85rem; color:var(--text-muted);">Personalized clinical & motivational support</p>
+                        </div>
+                    </div>
+                    
+                    <div id="ai-chat-feed" class="chat-scroll-area">
+                        <!-- AI messages will be injected here -->
+                        <div class="chat-msg">
+                            <div class="chat-header">
+                                <span class="chat-user">Coach</span>
+                            </div>
+                            <div class="chat-content">Hello! I'm your dedicated recovery expert. How can I help you stay on track today? Ask me about your health, savings, or tips to beat a craving.</div>
+                        </div>
+                    </div>
+
+                    <div id="typing-indicator" class="typing-indicator hidden">
+                        <span></span><span></span><span></span>
+                    </div>
+
+                    <div class="chat-input-container">
+                        <div class="chat-input-wrapper">
+                            <textarea id="ai-chat-input" placeholder="Type your message..." rows="1"></textarea>
+                            <button class="send-btn" onclick="askAI()">
+                                <span style="transform: rotate(-45deg); display: inline-block;">➤</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="diet" class="page hidden">
+    <div class="grid">
+        <div class="card">
+            <h3>🍎 Antioxidant Keys</h3>
+            <p style="font-size: 0.85rem; margin-bottom: 10px;">Combat lung inflammation:</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                <button onclick="openDietModal('Antioxidants')" style="width:auto; padding: 5px 10px; font-size: 0.7rem;">+ Add Items</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>🥦 Detox Keys</h3>
+            <p style="font-size: 0.85rem; margin-bottom: 10px;">Flush out nicotine:</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                <button onclick="openDietModal('Detox')" style="width:auto; padding: 5px 10px; font-size: 0.7rem; background:var(--success)">+ Add Items</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>💧 Hydration</h3>
+            <p id="water-status">0 / 12 Glasses</p>
+            <div class="progress-container"><div id="water-bar" class="progress-bar"></div></div>
+            <button onclick="addWater(1)">+1 Glass</button>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top: 20px;">
+        <h3>📅 Today's Detox Log</h3>
+        <div id="diet-log" style="font-size: 0.9rem; color: var(--text-muted);">
+            No items logged today.
+        </div>
+    </div>
+</section>
+
+            <section id="community" class="page hidden">
+                <div class="chat-wrapper">
+                    <div class="chat-header-main">
+                        <div class="chat-title-info">
+                            <h3>📢 Community Hub</h3>
+                            <span class="online-indicator">Global Chat Active</span>
+                        </div>
+                        <p style="font-size: 0.8rem; color: var(--text-muted);">Share your progress with the world</p>
+                    </div>
+
+                    <div id="community-feed" class="chat-scroll-area">
+                        <!-- Messages loaded via JS -->
+                    </div>
+
+                    <div class="chat-input-container">
+                        <textarea id="postInput" placeholder="Share a milestone or ask for support..."></textarea>
+                        <button class="chat-send-btn" onclick="addPost()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="profile" class="page hidden">
+                <div class="card">
+                    <h3>👤 Health Profile</h3>
+                    <div id="profile-info"></div>
+                    <hr>
+                    <input type="number" id="edit-weight" placeholder="Update Weight">
+                    <input type="text" id="edit-disease" placeholder="Update Condition">
+                    <button onclick="saveProfileEdit()">Save Profile</button>
+                </div>
+            </section>
+        </div>
+
+
+        <div id="diet-modal" class="hidden">
+            <h3 id="diet-modal-title">Log Diet Item</h3>
+            <select id="diet-item-select"></select>
+            <button onclick="confirmDietLog()" style="background:var(--success)">Add to Log</button>
+            <button onclick="closeDietModal()" style="background:var(--border); margin-top:10px;">Cancel</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

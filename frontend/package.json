@@ -1,0 +1,12 @@
+{
+  "name": "quit-it-frontend",
+  "version": "1.0.0",
+  "description": "Smoking Cessation System",
+  "main": "script.js",
+  "scripts": {
+    "dev": "live-server"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.1"
+  }
+}
