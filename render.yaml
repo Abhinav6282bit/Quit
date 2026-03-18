@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: quit-it-backend
+    env: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false # You will provide this in the Render dashboard
+      - key: GEMINI_API_KEY
+        sync: false # You will provide this in the Render dashboard
